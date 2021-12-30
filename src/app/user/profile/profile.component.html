@@ -30,9 +30,12 @@
         </mat-list-item>
         <mat-divider inset></mat-divider>
         <mat-list-item>
-          <span class="mat-caption"
-            >Joined: {{ user.createdAt | date: "mediumDate" }}</span
-          >
+          <span class="mat-body-1">
+            Joined: {{ user.createdAt | date: "mediumDate" }}
+          </span>
+        </mat-list-item>
+        <mat-list-item>
+          <div class="mat-body-1">{{ user.about }}</div>
         </mat-list-item>
       </mat-list>
     </mat-card-content>

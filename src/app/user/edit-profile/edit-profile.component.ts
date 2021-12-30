@@ -1,6 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs';
 import { UiService } from 'src/app/common/ui.service';
 import {
   EmailValidation,
@@ -21,13 +23,15 @@ export class EditProfileComponent implements OnInit, OnDestroy {
   user!: User;
   subs = new SubSink();
   updateError = '';
+  @ViewChild('autosize') autosize!: CdkTextareaAutosize;
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private userService: UserService,
     private uiService: UiService,
-    private router: Router
+    private router: Router,
+    private _ngZone: NgZone
   ) {}
 
   ngOnInit(): void {
@@ -35,9 +39,17 @@ export class EditProfileComponent implements OnInit, OnDestroy {
     this.buildForm();
   }
 
+  triggerResize() {
+    // Wait for changes to be applied, then trigger textarea resize.
+    this._ngZone.onStable
+      .pipe(take(1))
+      .subscribe(() => this.autosize.resizeToFitContent(true));
+  }
+
   buildForm() {
     this.profileEditForm = this.formBuilder.group({
       name: [this.user.name, NameValidation],
+      about: [this.user.about, Validators.minLength(5)],
       email: [this.user.email, EmailValidation],
       password: ['', OptionalPasswordValidation],
     });
