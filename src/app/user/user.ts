@@ -9,10 +9,12 @@ export interface IUser {
   email: string;
   name: string;
   about: string;
+  photo?: any;
   createdAt: string;
 }
 
 export class User implements IUser {
+  public photo?: any;
   constructor(
     public _id = '',
     public email = '',

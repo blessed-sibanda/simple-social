@@ -24,6 +24,7 @@ export class EditProfileComponent implements OnInit, OnDestroy {
   subs = new SubSink();
   updateError = '';
   @ViewChild('autosize') autosize!: CdkTextareaAutosize;
+  file: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -52,6 +53,7 @@ export class EditProfileComponent implements OnInit, OnDestroy {
       about: [this.user.about, Validators.minLength(5)],
       email: [this.user.email, EmailValidation],
       password: ['', OptionalPasswordValidation],
+      photo: [],
     });
   }
 
@@ -65,7 +67,7 @@ export class EditProfileComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: IUser) => {
           this.uiService.showToast('Profile updated successfully');
-          this.router.navigate([`/users/${this.user._id}`]);
+          this.router.navigate(['/profile']);
         },
         error: (err) => (this.updateError = err.message),
       });
