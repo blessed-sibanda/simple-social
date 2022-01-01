@@ -19,9 +19,9 @@ import {
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignUpComponent } from './user/sign-up/sign-up.component';
 import { SimpleDialogComponent } from './common/simple-dialog/simple-dialog.component';
-import { LoginComponent } from './auth/login/login.component';
+
 import { AuthService } from './auth/auth.service';
-import { CustomAuthService } from './auth/custom-auth.service';
+
 import { AuthHttpInterceptor } from './auth/auth-http-interceptor';
 import { authFactory } from './auth/auth.factory';
 import { UploadImagesComponent } from './core/upload-images/upload-images.component';

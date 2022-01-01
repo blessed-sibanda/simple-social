@@ -2,6 +2,7 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ImagePickerConf } from 'ngp-image-picker';
 import { take } from 'rxjs';
 import { UiService } from 'src/app/common/ui.service';
 import {
@@ -24,7 +25,15 @@ export class EditProfileComponent implements OnInit, OnDestroy {
   subs = new SubSink();
   updateError = '';
   @ViewChild('autosize') autosize!: CdkTextareaAutosize;
-  file: any;
+  image: any | undefined | null;
+
+  imagePickerConf: ImagePickerConf = {
+    borderRadius: '4px',
+    language: 'en',
+    width: '200px',
+    height: '150px',
+    hideDownloadBtn: true,
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,6 +49,27 @@ export class EditProfileComponent implements OnInit, OnDestroy {
     this.buildForm();
   }
 
+  dataURLtoFile(dataurl: any, filename: string) {
+    if (!dataurl) return null;
+    var arr = dataurl.split(','),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, { type: mime });
+  }
+
+  onImageChange(event: any) {
+    let filename = `${Date.now()}${Math.floor(Math.random() * Date.now())}`;
+    this.image = this.dataURLtoFile(event, filename);
+    console.log(this.image);
+  }
+
   triggerResize() {
     // Wait for changes to be applied, then trigger textarea resize.
     this._ngZone.onStable
@@ -53,7 +83,6 @@ export class EditProfileComponent implements OnInit, OnDestroy {
       about: [this.user.about, Validators.minLength(5)],
       email: [this.user.email, EmailValidation],
       password: ['', OptionalPasswordValidation],
-      photo: [],
     });
   }
 
@@ -63,7 +92,7 @@ export class EditProfileComponent implements OnInit, OnDestroy {
     }
 
     this.subs.sink = this.userService
-      .updateUser(this.user._id, submittedForm.value)
+      .updateUser(this.user._id, submittedForm.value, this.image || null)
       .subscribe({
         next: (res: IUser) => {
           this.uiService.showToast('Profile updated successfully');

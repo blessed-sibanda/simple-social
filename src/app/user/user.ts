@@ -9,18 +9,18 @@ export interface IUser {
   email: string;
   name: string;
   about: string;
-  photo?: any;
+  photoUrl: string;
   createdAt: string;
 }
 
 export class User implements IUser {
-  public photo?: any;
   constructor(
     public _id = '',
     public email = '',
     public name = '',
     public about = '',
-    public createdAt = ''
+    public createdAt = '',
+    public photoUrl = ''
   ) {}
 
   static Build(user: IUser): User {
@@ -29,7 +29,8 @@ export class User implements IUser {
       user.email,
       user.name,
       user.about ?? '',
-      user.createdAt
+      user.createdAt,
+      user.photoUrl
     );
   }
 

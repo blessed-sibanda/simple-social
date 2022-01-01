@@ -8,6 +8,10 @@ import { UserRoutingModule } from './user-routing.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { UserResolve } from './user.resolve';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  NgpImagePickerComponent,
+  NgpImagePickerModule,
+} from 'ngp-image-picker';
 
 @NgModule({
   declarations: [UsersComponent, EditProfileComponent, ProfileComponent],
@@ -17,6 +21,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     UserRoutingModule,
     FlexLayoutModule,
     ReactiveFormsModule,
+    NgpImagePickerModule,
+    // NgpImagePickerComponent,
   ],
   providers: [UserResolve],
 })

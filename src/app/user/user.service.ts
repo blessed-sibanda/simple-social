@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map, catchError, throwError } from 'rxjs';
 import { User, IUser, ISignUp } from './user';
@@ -10,7 +10,7 @@ interface IUserService {
   getUsers(): Observable<User[]>;
   getUser(id: string | null): Observable<User>;
   deleteUser(id: string | null): Observable<any>;
-  updateUser(id: string | null, data: object): Observable<User>;
+  updateUser(id: string | null, data: any, file?: File): Observable<User>;
 }
 
 @Injectable({
@@ -23,15 +23,30 @@ export class UserService implements IUserService {
     return this.httpClient.delete<any>(`${environment.baseApiUrl}/users/${id}`);
   }
 
-  updateUser(id: string | null, data: object): Observable<User> {
+  updateUser(id: string | null, data: any, file?: File): Observable<User> {
     if (id === null) {
       return throwError(() => new Error('User id is not set'));
     }
 
-    return this.httpClient.put<IUser>(
-      `${environment.baseApiUrl}/users/${id}`,
-      data
-    );
+    if (!file) {
+      return this.httpClient.put<IUser>(
+        `${environment.baseApiUrl}/users/${id}`,
+        data
+      );
+    } else {
+      console.log('data -->', data);
+      const formData: FormData = new FormData();
+      formData.append('file', file);
+      data['name'] && formData.append('name', data['name']);
+      data['email'] && formData.append('email', data['email']);
+      data['password'] && formData.append('password', data['password']);
+      data['about'] && formData.append('about', data['about']);
+
+      return this.httpClient.put<IUser>(
+        `${environment.baseApiUrl}/users/${id}`,
+        formData
+      );
+    }
   }
 
   getUser(id: string | null): Observable<User> {

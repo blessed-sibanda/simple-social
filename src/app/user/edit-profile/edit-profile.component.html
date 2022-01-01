@@ -2,6 +2,18 @@
   <mat-card fxFlex.xs="98%" fxFlex.gt-xs="400px">
     <mat-card-content>
       <h1 class="app-header text-center">Edit Profile</h1>
+      <div
+        fxLayout="row"
+        style="margin-bottom: 1.5em"
+        fxLayoutAlign="center center"
+        fxLayoutGap="10px"
+      >
+        <ngp-image-picker
+          [_config]="imagePickerConf"
+          ($imageChanged)="onImageChange($event)"
+          [_imageSrc]="user.photoUrl"
+        ></ngp-image-picker>
+      </div>
       <form
         [formGroup]="profileEditForm"
         (ngSubmit)="updateProfile(profileEditForm)"
