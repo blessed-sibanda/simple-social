@@ -4,6 +4,12 @@ export interface ISignUp {
   password: string;
 }
 
+export interface IFollow {
+  _id: string;
+  name: string;
+  photoUrl: string;
+}
+
 export interface IUser {
   _id: string;
   email: string;
@@ -11,6 +17,8 @@ export interface IUser {
   about: string;
   photoUrl: string;
   createdAt: string;
+  followers: IFollow[];
+  following: IFollow[];
 }
 
 export class User implements IUser {
@@ -20,7 +28,9 @@ export class User implements IUser {
     public name = '',
     public about = '',
     public createdAt = '',
-    public photoUrl = ''
+    public photoUrl = '',
+    public followers: IFollow[] = [],
+    public following: IFollow[] = []
   ) {}
 
   static Build(user: IUser): User {
@@ -30,7 +40,9 @@ export class User implements IUser {
       user.name,
       user.about ?? '',
       user.createdAt,
-      user.photoUrl
+      user.photoUrl,
+      user.followers,
+      user.following
     );
   }
 

@@ -11,6 +11,8 @@ interface IUserService {
   getUser(id: string | null): Observable<User>;
   deleteUser(id: string | null): Observable<any>;
   updateUser(id: string | null, data: any, file?: File): Observable<User>;
+  followUser(id: string): Observable<User>;
+  unfollowUser(id: string): Observable<User>;
 }
 
 @Injectable({
@@ -18,6 +20,18 @@ interface IUserService {
 })
 export class UserService implements IUserService {
   constructor(private httpClient: HttpClient) {}
+
+  followUser(id: string): Observable<User> {
+    return this.httpClient
+      .put<IUser>(`${environment.baseApiUrl}/users/${id}/follow`, {})
+      .pipe(map(User.Build), catchError(transformError));
+  }
+
+  unfollowUser(id: string): Observable<User> {
+    return this.httpClient
+      .delete<IUser>(`${environment.baseApiUrl}/users/${id}/follow`, {})
+      .pipe(map(User.Build), catchError(transformError));
+  }
 
   deleteUser(id: string | null): Observable<any> {
     return this.httpClient.delete<any>(`${environment.baseApiUrl}/users/${id}`);

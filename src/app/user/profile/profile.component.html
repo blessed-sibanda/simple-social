@@ -15,6 +15,15 @@
 
           <div class="flex-spacer"></div>
           <button
+            *ngIf="!isOwner()"
+            mat-raised-button
+            [color]="isFollower ? 'accent' : 'primary'"
+            class="mat-elevation-z1"
+            (click)="updateFollowing()"
+          >
+            {{ isFollower ? "Unfollow" : "Follow" }}
+          </button>
+          <button
             *ngIf="isOwner()"
             [routerLink]="'/users/' + user._id + '/edit'"
             mat-icon-button
