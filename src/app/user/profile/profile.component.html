@@ -4,9 +4,11 @@
     <mat-card-content>
       <mat-list>
         <mat-list-item>
-          <mat-icon mat-list-icon style="transform: scale(1.8)"
-            >account_circle</mat-icon
-          >
+          <img
+            mat-list-avatar
+            [src]="user.photoUrl ? user.photoUrl : '../../../assets/user.png'"
+            alt=""
+          />
 
           <h4 mat-line>{{ user.name }}</h4>
           <h5 mat-line>{{ user.email }}</h5>

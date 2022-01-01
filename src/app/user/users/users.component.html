@@ -8,9 +8,13 @@
           [routerLink]="'/users/' + user._id"
           *ngFor="let user of users"
         >
-          <mat-icon style="transform: scale(1.2); margin-right: 0.5em"
-            >account_circle</mat-icon
-          >
+          <img
+            style="margin-right: 0.5em"
+            mat-list-avatar
+            [src]="user.photoUrl ? user.photoUrl : '../../../assets/user.png'"
+            alt=""
+          />
+
           <span>{{ user.name }}</span>
 
           <div class="flex-spacer"></div>
