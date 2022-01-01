@@ -12,9 +12,10 @@ import {
   NgpImagePickerComponent,
   NgpImagePickerModule,
 } from 'ngp-image-picker';
+import { UserGridComponent } from './user-grid/user-grid.component';
 
 @NgModule({
-  declarations: [UsersComponent, EditProfileComponent, ProfileComponent],
+  declarations: [UsersComponent, EditProfileComponent, ProfileComponent, UserGridComponent],
   imports: [
     CommonModule,
     AppMaterialModule,

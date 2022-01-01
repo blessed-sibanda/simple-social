@@ -1,0 +1,24 @@
+<mat-grid-list
+  style="margin-top: 1em"
+  [cols]="media.isActive('xs') ? 2 : 4"
+  rowHeight="5:4"
+>
+  <mat-grid-tile *ngFor="let user of userList">
+    <div fxLayout="column" fxLayoutAlign="center center">
+      <img
+        [routerLink]="'/users/' + user._id"
+        style="
+          border-radius: 50%;
+          object-fit: cover;
+          cursor: pointer;
+          height: 80px;
+          max-width: 80px;
+        "
+        mat-list-avatar
+        [src]="user.photoUrl ? user.photoUrl : '../../../assets/user.png'"
+        alt=""
+      />
+      <p class="mat-body-1">{{ user.name }}</p>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
