@@ -24,7 +24,6 @@ import { AuthService } from './auth/auth.service';
 
 import { AuthHttpInterceptor } from './auth/auth-http-interceptor';
 import { authFactory } from './auth/auth.factory';
-import { UploadImagesComponent } from './core/upload-images/upload-images.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +33,6 @@ import { UploadImagesComponent } from './core/upload-images/upload-images.compon
     SideNavigationComponent,
     SignUpComponent,
     SimpleDialogComponent,
-    UploadImagesComponent,
   ],
   imports: [
     HttpClientModule,
