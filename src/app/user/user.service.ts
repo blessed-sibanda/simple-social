@@ -49,25 +49,17 @@ export class UserService implements IUserService {
       return throwError(() => new Error('User id is not set'));
     }
 
-    if (!file) {
-      return this.httpClient.put<IUser>(
-        `${environment.baseApiUrl}/users/${id}`,
-        data
-      );
-    } else {
-      console.log('data -->', data);
-      const formData: FormData = new FormData();
-      formData.append('file', file);
-      data['name'] && formData.append('name', data['name']);
-      data['email'] && formData.append('email', data['email']);
-      data['password'] && formData.append('password', data['password']);
-      data['about'] && formData.append('about', data['about']);
+    const formData: FormData = new FormData();
+    file && formData.append('file', file);
+    data['name'] && formData.append('name', data['name']);
+    data['email'] && formData.append('email', data['email']);
+    data['password'] && formData.append('password', data['password']);
+    data['about'] && formData.append('about', data['about']);
 
-      return this.httpClient.put<IUser>(
-        `${environment.baseApiUrl}/users/${id}`,
-        formData
-      );
-    }
+    return this.httpClient.put<IUser>(
+      `${environment.baseApiUrl}/users/${id}`,
+      formData
+    );
   }
 
   getUser(id: string | null): Observable<User> {

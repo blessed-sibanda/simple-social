@@ -24,7 +24,7 @@
   </mat-list>
   <mat-divider></mat-divider>
 
-  <mat-card-content>
+  <mat-card-content style="margin-bottom: 0">
     <div [formGroup]="postForm" fxLayout="column" fxLayoutGap="10px">
       <mat-form-field fxFlex="100%">
         <textarea
@@ -32,14 +32,28 @@
           formControlName="text"
           matInput
           #text
+          cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="2"
         ></textarea>
+        <mat-error *ngIf="postForm.get('text')?.hasError('required')">
+          Post content is required
+        </mat-error>
+        <mat-error *ngIf="postForm.get('text')?.hasError('minlength')">
+          Text should be at least 3 characters long
+        </mat-error>
       </mat-form-field>
     </div>
   </mat-card-content>
   <mat-card-actions fxLayout="row">
     <button mat-icon-button><mat-icon>add_a_photo</mat-icon></button>
     <div class="flex-spacer"></div>
-    <button (click)="createPost(text.value)" color="primary" mat-raised-button>
+    <button
+      [disabled]="postForm.invalid"
+      (click)="createPost(text.value)"
+      color="primary"
+      mat-raised-button
+    >
       POST
     </button>
   </mat-card-actions>

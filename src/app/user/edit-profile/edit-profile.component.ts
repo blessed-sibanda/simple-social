@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImagePickerConf } from 'ngp-image-picker';
 import { take } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 import { UiService } from 'src/app/common/ui.service';
 import {
   EmailValidation,
@@ -41,7 +42,8 @@ export class EditProfileComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private uiService: UiService,
     private router: Router,
-    private _ngZone: NgZone
+    private _ngZone: NgZone,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -95,6 +97,7 @@ export class EditProfileComponent implements OnInit, OnDestroy {
       .updateUser(this.user._id, submittedForm.value, this.image || null)
       .subscribe({
         next: (res: IUser) => {
+          this.authService.currentUser$.next(res);
           this.uiService.showToast('Profile updated successfully');
           this.router.navigate(['/profile']);
         },

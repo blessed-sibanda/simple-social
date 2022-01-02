@@ -1,6 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { Component, OnDestroy, OnInit, NgZone, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { tap } from 'rxjs';
+import { tap, take } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { User } from 'src/app/user/user';
 import { SubSink } from 'subsink';
@@ -17,11 +18,13 @@ export class NewPostComponent implements OnInit, OnDestroy {
   currentUser!: User;
   subs = new SubSink();
   image: any | undefined | null;
+  @ViewChild('autosize') autosize!: CdkTextareaAutosize;
 
   constructor(
     private formBuilder: FormBuilder,
     private postService: PostService,
-    private authService: AuthService
+    private authService: AuthService,
+    private _ngZone: NgZone
   ) {}
 
   ngOnDestroy(): void {
@@ -56,6 +59,13 @@ export class NewPostComponent implements OnInit, OnDestroy {
     console.log(this.image);
   }
 
+  triggerResize() {
+    // Wait for changes to be applied, then trigger textarea resize.
+    this._ngZone.onStable
+      .pipe(take(1))
+      .subscribe(() => this.autosize.resizeToFitContent(true));
+  }
+
   buildForm() {
     this.postForm = this.formBuilder.group({
       text: ['', [Validators.required, Validators.minLength(5)]],
@@ -66,6 +76,7 @@ export class NewPostComponent implements OnInit, OnDestroy {
     if (this.postForm.valid && text !== '')
       this.postService.createPost(text, this.image || null).subscribe({
         next: (res: IPost) => {
+          this.postForm.reset();
           this.postService.posts$.next([
             res,
             ...this.postService.posts$.getValue(),
