@@ -1,1 +1,46 @@
-<p>new-post works!</p>
+<mat-card style="padding-top: 5px">
+  <mat-list
+    style="
+      padding: 0;
+      margin-top: -6px;
+      margin-left: -16px;
+      margin-right: -16px;
+    "
+  >
+    <mat-list-item>
+      <img
+        style="margin-right: 0.5em"
+        mat-list-avatar
+        [src]="
+          currentUser.photoUrl
+            ? currentUser.photoUrl
+            : '../../../assets/user.png'
+        "
+        alt=""
+      />
+
+      <span>{{ currentUser.name }}</span>
+    </mat-list-item>
+  </mat-list>
+  <mat-divider></mat-divider>
+
+  <mat-card-content>
+    <div [formGroup]="postForm" fxLayout="column" fxLayoutGap="10px">
+      <mat-form-field fxFlex="100%">
+        <textarea
+          placeholder="Share your thoughts..."
+          formControlName="text"
+          matInput
+          #text
+        ></textarea>
+      </mat-form-field>
+    </div>
+  </mat-card-content>
+  <mat-card-actions fxLayout="row">
+    <button mat-icon-button><mat-icon>add_a_photo</mat-icon></button>
+    <div class="flex-spacer"></div>
+    <button (click)="createPost(text.value)" color="primary" mat-raised-button>
+      POST
+    </button>
+  </mat-card-actions>
+</mat-card>

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { transformError } from '../common/common';
 import { IPost, Post } from './post';
@@ -15,29 +15,29 @@ interface IPostService {
   providedIn: 'root',
 })
 export class PostService implements IPostService {
+  posts$ = new BehaviorSubject<IPost[]>([]);
+
   constructor(private httpClient: HttpClient) {}
 
   getPostFeed(): Observable<Post[]> {
     return this.httpClient
       .get<IPost[]>(`${environment.baseApiUrl}/posts/`)
-      .pipe(map(Post.BuildMany), catchError(transformError));
+      .pipe(
+        map(Post.BuildMany),
+        tap((posts) => this.posts$.next(posts)),
+        catchError(transformError)
+      );
   }
 
   createPost(text: string, file?: File): Observable<Post> {
-    if (!file) {
-      return this.httpClient.post<IPost>(`${environment.baseApiUrl}/posts/`, {
-        text,
-      });
-    } else {
-      const formData: FormData = new FormData();
-      formData.append('file', file);
-      formData.append('text', text);
+    const formData: FormData = new FormData();
+    file && formData.append('file', file);
+    formData.append('text', text);
 
-      return this.httpClient.post<IPost>(
-        `${environment.baseApiUrl}/posts/`,
-        formData
-      );
-    }
+    return this.httpClient.post<IPost>(
+      `${environment.baseApiUrl}/posts/`,
+      formData
+    );
   }
 
   deletePost(id: string): Observable<any> {

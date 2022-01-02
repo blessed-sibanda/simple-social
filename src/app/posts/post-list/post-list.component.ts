@@ -31,9 +31,10 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.subs.sink = combineLatest([
       this.postService.getPostFeed(),
       this.authService.currentUser$,
+      this.postService.posts$,
     ])
       .pipe(
-        tap(([posts, currentUser]) => {
+        tap(([res, currentUser, posts]) => {
           this.posts = posts;
           this.currentUser = currentUser;
         })
@@ -42,12 +43,24 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   deletePost(post: Post) {
-    this.postService.deletePost(post._id).subscribe({
-      next: (res) => {
-        this.posts = this.posts.filter((p) => p._id !== post._id);
-        this.uiService.showToast('You have deleted your post');
-      },
-      error: (err) => this.uiService.showToast(err.message),
-    });
+    const dialog = this.uiService.showDialog(
+      'Delete Post',
+      'Confirm to delete this post',
+      'Confirm',
+      'Cancel'
+    );
+    this.subs.add(
+      dialog.subscribe((result) => {
+        if (result) {
+          this.postService.deletePost(post._id).subscribe({
+            next: (res) => {
+              this.posts = this.posts.filter((p) => p._id !== post._id);
+              this.uiService.showToast('You have deleted your post');
+            },
+            error: (err) => this.uiService.showToast(err.message),
+          });
+        }
+      })
+    );
   }
 }

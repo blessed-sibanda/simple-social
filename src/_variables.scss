@@ -1,5 +1,7 @@
 @use "@angular/material" as mat;
 
+$c1: mat.get-color-from-palette(mat.$teal-palette, 200);
+
 $simple-social-primary: mat.define-palette(mat.$teal-palette, 500);
 $simple-social-accent: mat.define-palette(
   mat.$orange-palette,
