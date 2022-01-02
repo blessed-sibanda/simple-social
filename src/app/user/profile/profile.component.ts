@@ -1,9 +1,17 @@
-import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, tap } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { UiService } from 'src/app/common/ui.service';
 import { SubSink } from 'subsink';
+import { FollowService } from '../follow.service';
 import { IFollow, IUser, User } from '../user';
 import { UserService } from '../user.service';
 
@@ -12,44 +20,49 @@ import { UserService } from '../user.service';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
-export class ProfileComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class ProfileComponent implements OnInit, OnDestroy {
   user!: User;
-  currentUser!: User;
   subs = new SubSink();
-  isFollower!: boolean;
-  followers$ = new BehaviorSubject<IFollow[]>([]);
-  following$ = new BehaviorSubject<IFollow[]>([]);
+  followers: IFollow[] = [];
+  following: IFollow[] = [];
+  isFollower: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private authService: AuthService,
     private userService: UserService,
     private uiService: UiService,
-    private router: Router
-  ) {}
+    private router: Router,
+    public followService: FollowService
+  ) {
+    this.subs.sink = route.paramMap.subscribe((_) => this.syncData());
+  }
 
-  ngAfterViewChecked(): void {
+  syncData() {
     this.user = this.route.snapshot.data['user'];
+    this.followService.followers$.next(this.user.followers);
+    this.followService.following$.next(this.user.following);
+    let currentUser = this.authService.currentUser$.getValue();
+    let isFollower = this.user.followers.includes(currentUser as IFollow);
+    this.followService.isFollower$.next(isFollower);
   }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
 
-  updateRelations(recentUser: IUser) {
-    this.followers$.next(recentUser.followers);
-    this.following$.next(recentUser.following);
-  }
-
   ngOnInit(): void {
-    this.user = this.route.snapshot.data['user'];
-    this.updateRelations(this.user);
-    this.subs.sink = this.authService.currentUser$
+    this.syncData();
+    this.subs.sink = combineLatest([
+      this.followService.followers$,
+      this.followService.following$,
+      this.followService.isFollower$,
+    ])
       .pipe(
-        tap((currentUser) => {
-          this.isFollower = this.user.followers
-            .map((u) => u._id)
-            .includes(currentUser._id);
+        tap(([followers, following, isFollower]) => {
+          this.followers = followers;
+          this.following = following;
+          this.isFollower = isFollower;
         })
       )
       .subscribe();
@@ -61,27 +74,9 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   updateFollowing() {
     if (this.isFollower) {
-      this.userService.unfollowUser(this.user._id).subscribe({
-        next: (res) => {
-          this.user = res;
-          this.uiService.showToast(
-            `You have stopped following ${this.user.name}`
-          );
-          this.isFollower = !this.isFollower;
-          this.updateRelations(this.user);
-        },
-        error: (err) => console.log(err),
-      });
+      this.followService.unfollowUser(this.user);
     } else {
-      this.userService.followUser(this.user._id).subscribe({
-        next: (res) => {
-          this.user = res;
-          this.uiService.showToast(`You are now following ${this.user.name}`);
-          this.isFollower = !this.isFollower;
-          this.updateRelations(this.user);
-        },
-        error: (err) => console.log(err),
-      });
+      this.followService.followUser(this.user);
     }
   }
 

@@ -3,7 +3,7 @@
   [cols]="media.isActive('xs') ? 2 : 4"
   rowHeight="5:4"
 >
-  <mat-grid-tile *ngFor="let user of userList">
+  <mat-grid-tile *ngFor="let user of users">
     <div fxLayout="column" fxLayoutAlign="center center">
       <img
         [routerLink]="'/users/' + user._id"

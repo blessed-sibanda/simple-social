@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { MediaObserver } from '@angular/flex-layout';
-import { BehaviorSubject, tap } from 'rxjs';
 import { SubSink } from 'subsink';
 import { IFollow } from '../user';
 
@@ -10,8 +9,7 @@ import { IFollow } from '../user';
   styleUrls: ['./user-grid.component.scss'],
 })
 export class UserGridComponent implements OnInit, OnDestroy {
-  @Input() users$!: BehaviorSubject<IFollow[]>;
-  userList: IFollow[] = [];
+  @Input() users!: IFollow[];
   subs = new SubSink();
 
   constructor(public media: MediaObserver) {}
@@ -20,9 +18,5 @@ export class UserGridComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
-  ngOnInit(): void {
-    this.subs.sink = this.users$
-      .pipe(tap((users) => (this.userList = users)))
-      .subscribe();
-  }
+  ngOnInit(): void {}
 }
