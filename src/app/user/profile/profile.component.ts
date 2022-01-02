@@ -43,8 +43,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.followService.followers$.next(this.user.followers);
     this.followService.following$.next(this.user.following);
     let currentUser = this.authService.currentUser$.getValue();
-    let isFollower = this.user.followers.includes(currentUser as IFollow);
-    this.followService.isFollower$.next(isFollower);
+    this.isFollower = this.user.followers
+      .map((u) => u._id)
+      .includes(currentUser._id);
+    this.followService.isFollower$.next(this.isFollower);
   }
 
   ngOnDestroy(): void {
