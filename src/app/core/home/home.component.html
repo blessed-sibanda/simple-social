@@ -1,4 +1,8 @@
-<div fxLayout="row" fxLayoutAlign="center">
+<div
+  *ngIf="!(authService.authStatus$ | async)?.isAuthenticated"
+  fxLayout="row"
+  fxLayoutAlign="center"
+>
   <mat-card fxFlex.xs="96%" fxFlex.gt-xs="600px">
     <mat-card-content>
       <mat-card-subtitle class="app-header"
@@ -8,4 +12,14 @@
       <p class="mat-body-2">Welcome to the MEAN Skeleton home page</p>
     </mat-card-content>
   </mat-card>
+</div>
+
+<div
+  fxLayout.gt-xs="row"
+  fxLayout.xs="column"
+  style="margin: 0 1em"
+  *ngIf="(authService.authStatus$ | async)?.isAuthenticated"
+>
+  <div fxFlexAlign.gt-xs="70%">Posts</div>
+  <app-find-people fxFlex.gt-xs="30%"></app-find-people>
 </div>

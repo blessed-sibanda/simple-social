@@ -1,0 +1,26 @@
+<mat-card>
+  <h2 class="app-header">Who to follow</h2>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item *ngFor="let user of people">
+        <img
+          style="margin-right: 0.5em"
+          mat-list-avatar
+          [src]="user.photoUrl ? user.photoUrl : '../../../assets/user.png'"
+          alt=""
+        />
+
+        <span>{{ user.name }}</span>
+
+        <div class="flex-spacer"></div>
+
+        <button mat-icon-button [routerLink]="'/users/' + user._id">
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button mat-raised-button color="primary" (click)="followUser(user)">
+          Follow
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

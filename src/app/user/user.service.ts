@@ -8,6 +8,7 @@ import { transformError } from '../common/common';
 interface IUserService {
   signUp(userData: ISignUp): Observable<User>;
   getUsers(): Observable<User[]>;
+  findPeople(): Observable<User[]>;
   getUser(id: string | null): Observable<User>;
   deleteUser(id: string | null): Observable<any>;
   updateUser(id: string | null, data: any, file?: File): Observable<User>;
@@ -20,6 +21,12 @@ interface IUserService {
 })
 export class UserService implements IUserService {
   constructor(private httpClient: HttpClient) {}
+
+  findPeople(): Observable<User[]> {
+    return this.httpClient
+      .get<IUser[]>(`${environment.baseApiUrl}/users/people`)
+      .pipe(map(User.BuildMany), catchError(transformError));
+  }
 
   followUser(id: string): Observable<User> {
     return this.httpClient

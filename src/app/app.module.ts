@@ -24,6 +24,7 @@ import { AuthService } from './auth/auth.service';
 
 import { AuthHttpInterceptor } from './auth/auth-http-interceptor';
 import { authFactory } from './auth/auth.factory';
+import { FindPeopleComponent } from './user/find-people/find-people.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { authFactory } from './auth/auth.factory';
     SideNavigationComponent,
     SignUpComponent,
     SimpleDialogComponent,
+    FindPeopleComponent,
   ],
   imports: [
     HttpClientModule,
