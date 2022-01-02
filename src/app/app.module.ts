@@ -27,6 +27,7 @@ import { authFactory } from './auth/auth.factory';
 import { FindPeopleComponent } from './user/find-people/find-people.component';
 import { NewPostComponent } from './posts/new-post/new-post.component';
 import { PostListComponent } from './posts/post-list/post-list.component';
+import { NgpImagePickerModule } from 'ngp-image-picker';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { PostListComponent } from './posts/post-list/post-list.component';
     FlexLayoutModule,
     ReactiveFormsModule,
     FormsModule,
+    NgpImagePickerModule,
   ],
   providers: [
     {

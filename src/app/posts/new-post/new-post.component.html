@@ -24,9 +24,11 @@
   </mat-list>
   <mat-divider></mat-divider>
 
-  <mat-card-content style="margin-bottom: 0">
+  <mat-card-content
+    style="margin-bottom: 0; margin-top: 1em; padding-bottom: 0"
+  >
     <div [formGroup]="postForm" fxLayout="column" fxLayoutGap="10px">
-      <mat-form-field fxFlex="100%">
+      <mat-form-field style="padding-bottom: 0.5em" fxFlex="100%">
         <textarea
           placeholder="Share your thoughts..."
           formControlName="text"
@@ -34,19 +36,27 @@
           #text
           cdkTextareaAutosize
           #autosize="cdkTextareaAutosize"
-          cdkAutosizeMinRows="2"
+          cdkAutosizeMinRows="1"
         ></textarea>
         <mat-error *ngIf="postForm.get('text')?.hasError('required')">
-          Post content is required
+          Post text is required
         </mat-error>
         <mat-error *ngIf="postForm.get('text')?.hasError('minlength')">
           Text should be at least 3 characters long
         </mat-error>
       </mat-form-field>
+      <ngp-image-picker
+        *ngIf="upload"
+        [_config]="imagePickerConf"
+        ($imageChanged)="onImageChange($event)"
+      ></ngp-image-picker>
     </div>
   </mat-card-content>
   <mat-card-actions fxLayout="row">
-    <button mat-icon-button><mat-icon>add_a_photo</mat-icon></button>
+    <button (click)="upload = !upload" mat-icon-button>
+      <mat-icon *ngIf="!upload">add_a_photo</mat-icon>
+      <mat-icon color="warn" *ngIf="upload">close</mat-icon>
+    </button>
     <div class="flex-spacer"></div>
     <button
       [disabled]="postForm.invalid"

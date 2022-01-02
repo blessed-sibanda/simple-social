@@ -1,6 +1,7 @@
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { Component, OnDestroy, OnInit, NgZone, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ImagePickerConf } from 'ngp-image-picker';
 import { tap, take } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { User } from 'src/app/user/user';
@@ -19,6 +20,7 @@ export class NewPostComponent implements OnInit, OnDestroy {
   subs = new SubSink();
   image: any | undefined | null;
   @ViewChild('autosize') autosize!: CdkTextareaAutosize;
+  upload: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -26,6 +28,14 @@ export class NewPostComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private _ngZone: NgZone
   ) {}
+
+  imagePickerConf: ImagePickerConf = {
+    borderRadius: '4px',
+    language: 'en',
+    width: '200px',
+    height: '150px',
+    hideDownloadBtn: true,
+  };
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
@@ -77,6 +87,8 @@ export class NewPostComponent implements OnInit, OnDestroy {
       this.postService.createPost(text, this.image || null).subscribe({
         next: (res: IPost) => {
           this.postForm.reset();
+          this.upload = false;
+          this.image = null;
           this.postService.posts$.next([
             res,
             ...this.postService.posts$.getValue(),
