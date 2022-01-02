@@ -25,6 +25,8 @@ import { AuthService } from './auth/auth.service';
 import { AuthHttpInterceptor } from './auth/auth-http-interceptor';
 import { authFactory } from './auth/auth.factory';
 import { FindPeopleComponent } from './user/find-people/find-people.component';
+import { NewPostComponent } from './posts/new-post/new-post.component';
+import { PostListComponent } from './posts/post-list/post-list.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { FindPeopleComponent } from './user/find-people/find-people.component';
     SignUpComponent,
     SimpleDialogComponent,
     FindPeopleComponent,
+    NewPostComponent,
+    PostListComponent,
   ],
   imports: [
     HttpClientModule,

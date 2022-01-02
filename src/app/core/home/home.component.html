@@ -18,8 +18,15 @@
   fxLayout.gt-xs="row"
   fxLayout.xs="column"
   style="margin: 0 1em"
+  fxLayoutGap="24px"
   *ngIf="(authService.authStatus$ | async)?.isAuthenticated"
 >
-  <div fxFlex.sm="57%" fxFlex.gt-sm="70%">Posts</div>
+  <div fxFlex.sm="57%" fxFlex.gt-sm="70%">
+    <h1>Newsfeed</h1>
+    <mat-divider></mat-divider>
+    <app-new-post></app-new-post>
+    <mat-divider></mat-divider>
+    <app-post-list></app-post-list>
+  </div>
   <app-find-people fxFlex.sm="43%" fxFlex.gt-sm="30%"></app-find-people>
 </div>

@@ -16,10 +16,15 @@
       mat-icon-button
       [routerLink]="'/users/' + user._id"
     >
-      <mat-icon>visibility</mat-icon>
+      <mat-icon color="accent">visibility</mat-icon>
     </button>
-    <button mat-raised-button color="primary" (click)="followUser(user)">
-      Follow
+    <button
+      class="mat-elevation-z2"
+      mat-raised-button
+      color="primary"
+      (click)="followUser(user)"
+    >
+      FOLLOW
     </button>
   </mat-list-item>
 </ng-template>
