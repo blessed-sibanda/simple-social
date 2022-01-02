@@ -17,8 +17,8 @@
 <div
   fxLayout.gt-xs="row"
   fxLayout.xs="column"
-  style="margin: 0 1em"
   fxLayoutGap="24px"
+  style="max-width: 1080px; margin: 0 auto; padding: 0 1em"
   *ngIf="(authService.authStatus$ | async)?.isAuthenticated"
 >
   <div fxFlex.sm="57%" fxFlex.gt-sm="70%">

@@ -1,1 +1,48 @@
-<p>post-list works!</p>
+<mat-card
+  class="mat-elevation-z2"
+  style="margin-top: 0.5em"
+  *ngFor="let post of posts"
+>
+  <mat-card-header>
+    <img
+      mat-card-avatar
+      [src]="
+        post.postedBy.photoUrl
+          ? post.postedBy.photoUrl
+          : '../../../assets/user.png'
+      "
+      alt=""
+    />
+    <mat-card-title
+      [routerLink]="'/users/' + post.postedBy._id"
+      style="font-size: 19px; cursor: pointer"
+      >{{ post.postedBy.name }}</mat-card-title
+    >
+    <mat-card-subtitle>
+      {{ post.createdAt | date }}
+    </mat-card-subtitle>
+
+    <div class="flex-spacer"></div>
+    <button
+      *ngIf="currentUser._id === post.postedBy._id"
+      color="accent"
+      mat-icon-button
+      (click)="this.deletePost(post)"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div>{{ post.text }}</div>
+  </mat-card-content>
+  <img *ngIf="post.photoUrl" mat-card-image [src]="post.photoUrl" alt="" />
+  <mat-card-actions>
+    <button color="accent" mat-icon-button>
+      <mat-icon>favorite_border</mat-icon>
+    </button>
+    <button color="accent" mat-icon-button>
+      <mat-icon>comments</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>
