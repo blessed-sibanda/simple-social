@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MediaObserver } from '@angular/flex-layout';
 import { tap } from 'rxjs';
 import { SubSink } from 'subsink';
 import { FollowService } from '../follow.service';
@@ -16,7 +17,8 @@ export class FindPeopleComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private followService: FollowService
+    private followService: FollowService,
+    public media: MediaObserver
   ) {}
 
   ngOnInit(): void {

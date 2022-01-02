@@ -1,26 +1,48 @@
+<ng-template #userTemplate let-user="user">
+  <mat-list-item>
+    <img
+      style="margin-right: 0.5em"
+      mat-list-avatar
+      [src]="user.photoUrl ? user.photoUrl : '../../../assets/user.png'"
+      alt=""
+    />
+
+    <span>{{ user.name }}</span>
+
+    <div class="flex-spacer"></div>
+
+    <button
+      *ngIf="!media.isActive('sm')"
+      mat-icon-button
+      [routerLink]="'/users/' + user._id"
+    >
+      <mat-icon>visibility</mat-icon>
+    </button>
+    <button mat-raised-button color="primary" (click)="followUser(user)">
+      Follow
+    </button>
+  </mat-list-item>
+</ng-template>
+
 <mat-card>
-  <h2 class="app-header">Who to follow</h2>
+  <h2 class="app-header" style="margin-bottom: 0; padding-bottom: 0">
+    Who to follow
+  </h2>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let user of people">
-        <img
-          style="margin-right: 0.5em"
-          mat-list-avatar
-          [src]="user.photoUrl ? user.photoUrl : '../../../assets/user.png'"
-          alt=""
-        />
-
-        <span>{{ user.name }}</span>
-
-        <div class="flex-spacer"></div>
-
-        <button mat-icon-button [routerLink]="'/users/' + user._id">
-          <mat-icon>visibility</mat-icon>
-        </button>
-        <button mat-raised-button color="primary" (click)="followUser(user)">
-          Follow
-        </button>
-      </mat-list-item>
+    <mat-list *ngIf="!media.isActive('sm')">
+      <ng-template
+        *ngFor="let user of people"
+        [ngTemplateOutletContext]="{ user: user }"
+        [ngTemplateOutlet]="userTemplate"
+      ></ng-template>
     </mat-list>
+    <mat-action-list *ngIf="media.isActive('sm')">
+      <div *ngFor="let user of people" [routerLink]="'/users/' + user._id">
+        <ng-template
+          [ngTemplateOutletContext]="{ user: user }"
+          [ngTemplateOutlet]="userTemplate"
+        ></ng-template>
+      </div>
+    </mat-action-list>
   </mat-card-content>
 </mat-card>

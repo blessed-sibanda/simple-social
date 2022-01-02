@@ -20,6 +20,6 @@
   style="margin: 0 1em"
   *ngIf="(authService.authStatus$ | async)?.isAuthenticated"
 >
-  <div fxFlex.gt-xs="70%">Posts</div>
-  <app-find-people fxFlex.gt-xs="30%"></app-find-people>
+  <div fxFlex.sm="57%" fxFlex.gt-sm="70%">Posts</div>
+  <app-find-people fxFlex.sm="43%" fxFlex.gt-sm="30%"></app-find-people>
 </div>
