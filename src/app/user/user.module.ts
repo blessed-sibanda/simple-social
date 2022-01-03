@@ -10,14 +10,10 @@ import { UserResolve } from './user.resolve';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgpImagePickerModule } from 'ngp-image-picker';
 import { UserGridComponent } from './user-grid/user-grid.component';
+import { PostListComponent } from '../posts/post-list/post-list.component';
 
 @NgModule({
-  declarations: [
-    UsersComponent,
-    EditProfileComponent,
-    ProfileComponent,
-    UserGridComponent,
-  ],
+  declarations: [UsersComponent, EditProfileComponent],
   imports: [
     CommonModule,
     AppMaterialModule,

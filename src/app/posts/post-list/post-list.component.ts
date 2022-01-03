@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material/expansion';
+import { ActivatedRoute } from '@angular/router';
 import { combineLatest, tap } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { UiService } from 'src/app/common/ui.service';
@@ -21,26 +22,35 @@ export class PostListComponent implements OnInit, OnDestroy {
   constructor(
     private postService: PostService,
     private authService: AuthService,
-    private uiService: UiService
-  ) {}
+    private uiService: UiService,
+    private route: ActivatedRoute
+  ) {
+    this.subs.add(route.paramMap.subscribe((_) => this.syncData()));
+  }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
 
+  syncData() {
+    let user = this.route.snapshot.data['user'];
+    this.currentUser = this.authService.currentUser$.getValue();
+    let action = user
+      ? () => this.postService.getUserPosts(user._id)
+      : () => this.postService.getPostFeed(this.currentUser._id);
+    this.subs.add(
+      combineLatest([action(), this.postService.posts$])
+        .pipe(
+          tap(([res, posts]) => {
+            this.posts = posts;
+          })
+        )
+        .subscribe()
+    );
+  }
+
   ngOnInit(): void {
-    this.subs.sink = combineLatest([
-      this.postService.getPostFeed(),
-      this.authService.currentUser$,
-      this.postService.posts$,
-    ])
-      .pipe(
-        tap(([res, currentUser, posts]) => {
-          this.posts = posts;
-          this.currentUser = currentUser;
-        })
-      )
-      .subscribe();
+    this.syncData();
   }
 
   isLiked(post: Post): boolean {

@@ -26,9 +26,11 @@ import { AuthHttpInterceptor } from './auth/auth-http-interceptor';
 import { authFactory } from './auth/auth.factory';
 import { FindPeopleComponent } from './user/find-people/find-people.component';
 import { NewPostComponent } from './posts/new-post/new-post.component';
-import { PostListComponent } from './posts/post-list/post-list.component';
 import { NgpImagePickerModule } from 'ngp-image-picker';
 import { PostItemComponent } from './posts/post-item/post-item.component';
+import { PostListComponent } from './posts/post-list/post-list.component';
+import { ProfileComponent } from './user/profile/profile.component';
+import { UserGridComponent } from './user/user-grid/user-grid.component';
 
 @NgModule({
   declarations: [
@@ -40,8 +42,10 @@ import { PostItemComponent } from './posts/post-item/post-item.component';
     SimpleDialogComponent,
     FindPeopleComponent,
     NewPostComponent,
-    PostListComponent,
     PostItemComponent,
+    PostListComponent,
+    ProfileComponent,
+    UserGridComponent,
   ],
   imports: [
     HttpClientModule,

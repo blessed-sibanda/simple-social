@@ -6,7 +6,8 @@ import { transformError } from '../common/common';
 import { IPost, Post } from './post';
 
 interface IPostService {
-  getPostFeed(): Observable<Post[]>;
+  getPostFeed(userId: string): Observable<Post[]>;
+  getUserPosts(userId: string): Observable<Post[]>;
   createPost(text: string, file?: File): Observable<Post>;
   createComment(postId: string, text: string): Observable<Post>;
   deleteComment(postId: string, commentId: string): Observable<Post>;
@@ -51,9 +52,19 @@ export class PostService implements IPostService {
       .pipe(map(Post.Build), catchError(transformError));
   }
 
-  getPostFeed(): Observable<Post[]> {
+  getPostFeed(userId: string): Observable<Post[]> {
     return this.httpClient
-      .get<IPost[]>(`${environment.baseApiUrl}/posts/`)
+      .get<IPost[]>(`${environment.baseApiUrl}/posts/feed/${userId}`)
+      .pipe(
+        map(Post.BuildMany),
+        tap((posts) => this.posts$.next(posts)),
+        catchError(transformError)
+      );
+  }
+
+  getUserPosts(userId: string): Observable<Post[]> {
+    return this.httpClient
+      .get<IPost[]>(`${environment.baseApiUrl}/posts/user/${userId}`)
       .pipe(
         map(Post.BuildMany),
         tap((posts) => this.posts$.next(posts)),

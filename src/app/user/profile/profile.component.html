@@ -50,7 +50,11 @@
         </mat-list-item>
       </mat-list>
       <mat-tab-group dynamicHeight mat-stretch-tabs mat-align-tabs="center">
-        <mat-tab label="Posts">User Posts Here</mat-tab>
+        <mat-tab label="Posts">
+          <mat-card style="padding: 5px"
+            ><app-post-list></app-post-list
+          ></mat-card>
+        </mat-tab>
         <mat-tab label="Following">
           <app-user-grid [users]="following"></app-user-grid>
         </mat-tab>
