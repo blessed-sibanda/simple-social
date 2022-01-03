@@ -1,4 +1,7 @@
-<mat-card style="padding: 0; margin-bottom: 1.6em">
+<mat-card
+  class="mat-elevation-z1"
+  style="padding: 0; margin-bottom: 1.6em; border-radius: 0"
+>
   <mat-list style="background-color: #efefef; padding-top: 2px">
     <mat-list-item style="height: 52px">
       <img
@@ -49,7 +52,7 @@
 
   <mat-card-actions style="padding: 0 16px 8px" fxLayout="row">
     <button (click)="upload = !upload" mat-icon-button>
-      <mat-icon *ngIf="!upload">add_a_photo</mat-icon>
+      <mat-icon color="accent" *ngIf="!upload">add_a_photo</mat-icon>
       <mat-icon color="warn" *ngIf="upload">close</mat-icon>
     </button>
     <div class="flex-spacer"></div>

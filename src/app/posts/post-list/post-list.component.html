@@ -1,5 +1,11 @@
-<mat-card *ngFor="let post of posts" style="padding: 0; margin: 1em 0">
-  <mat-list style="background-color: #efefef; padding-top: 2px">
+<mat-card
+  *ngFor="let post of posts"
+  class="mat-elevation-z1"
+  style="padding: 0; margin: 1em 0; border-radius: 0"
+>
+  <mat-list
+    style="background-color: #efefef; padding-top: 2px; border-radius: 0"
+  >
     <mat-list-item style="height: 52px">
       <img
         mat-list-avatar
@@ -49,12 +55,74 @@
     alt=""
   />
   <mat-divider></mat-divider>
-  <mat-card-actions style="padding: 8px 16px; margin: 0">
+  <mat-card-actions
+    style="padding: 8px 16px; margin: 0; background-color: #efefef"
+  >
     <button color="accent" mat-icon-button>
       <mat-icon>favorite_border</mat-icon>
     </button>
-    <button color="accent" mat-icon-button>
+    <span>4</span>
+    <button (click)="panel.toggle()" color="accent" mat-icon-button>
       <mat-icon>comments</mat-icon>
     </button>
+    <span>2</span>
   </mat-card-actions>
+
+  <mat-expansion-panel
+    class="mat-elevation-z0"
+    style="padding: 0; background-color: #efefef"
+    #panel
+    hideToggle
+  >
+    <ng-template matExpansionPanelContent>
+      <div
+        style="padding: 6px 9px 0"
+        fxLayout="row"
+        fxLayoutAlign="center center"
+        fxLayoutGap="2px"
+      >
+        <img
+          matPrefix
+          mat-card-avatar
+          style="transform: scale(0.65)"
+          [src]="
+            currentUser.photoUrl
+              ? currentUser.photoUrl
+              : '../../../assets/user.png'
+          "
+          alt=""
+        />
+        <mat-form-field fxFill>
+          <input matInput placeholder="Write something..." />
+        </mat-form-field>
+      </div>
+      <div
+        style="padding: 6px 9px 0"
+        fxLayout="row"
+        fxLayoutAlign="center start"
+        fxLayoutGap="2px"
+      >
+        <img
+          matPrefix
+          mat-card-avatar
+          style="transform: scale(0.65)"
+          [src]="
+            currentUser.photoUrl
+              ? currentUser.photoUrl
+              : '../../../assets/user.png'
+          "
+          alt=""
+        />
+        <div
+          fxFill
+          fxLayout="column"
+          style="background-color: white; padding: 0.6em"
+        >
+          <h4 class="comment-header">Jane Anne</h4>
+          <div>Thanks a lot, that's so helpful</div>
+          <small>Sun Dec 20</small>
+        </div>
+      </div>
+    </ng-template>
+  </mat-expansion-panel>
 </mat-card>

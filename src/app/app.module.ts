@@ -28,6 +28,7 @@ import { FindPeopleComponent } from './user/find-people/find-people.component';
 import { NewPostComponent } from './posts/new-post/new-post.component';
 import { PostListComponent } from './posts/post-list/post-list.component';
 import { NgpImagePickerModule } from 'ngp-image-picker';
+import { PostItemComponent } from './posts/post-item/post-item.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { NgpImagePickerModule } from 'ngp-image-picker';
     FindPeopleComponent,
     NewPostComponent,
     PostListComponent,
+    PostItemComponent,
   ],
   imports: [
     HttpClientModule,
