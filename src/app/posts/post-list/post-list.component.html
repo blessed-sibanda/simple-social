@@ -1,4 +1,12 @@
-<mat-progress-spinner *ngIf="loading"></mat-progress-spinner>
+<div
+  style="padding-top: 1em"
+  *ngIf="loading"
+  fxLayout="column"
+  fxLayoutAlign="center center"
+>
+  <mat-spinner></mat-spinner>
+  <div style="margin-top: 1em">Loading posts...</div>
+</div>
 
 <div *ngIf="!loading">
   <mat-card
