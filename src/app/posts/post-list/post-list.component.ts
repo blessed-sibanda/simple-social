@@ -42,6 +42,28 @@ export class PostListComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
+  isLiked(post: Post): boolean {
+    return post.likes.map((l) => l._id).includes(this.currentUser._id);
+  }
+
+  updateLike(post: Post) {
+    let action = this.isLiked(post)
+      ? () => this.postService.unLikePost(post._id)
+      : () => this.postService.likePost(post._id);
+    this.subs.add(
+      action().subscribe({
+        next: (res) => {
+          this.posts = this.posts.map((p) => {
+            if (p._id === post._id) p.likes = res.likes;
+            return p;
+          });
+          this.postService.posts$.next(this.posts);
+        },
+        error: (err) => this.uiService.showToast(err.message),
+      })
+    );
+  }
+
   deletePost(post: Post) {
     const dialog = this.uiService.showDialog(
       'Delete Post',

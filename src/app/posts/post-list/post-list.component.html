@@ -56,17 +56,39 @@
   />
   <mat-divider></mat-divider>
   <mat-card-actions
-    style="padding: 8px 16px; margin: 0; background-color: #efefef"
+    style="padding: 6px 16px; margin: 0; background-color: #efefef"
   >
-    <button color="accent" mat-icon-button>
-      <mat-icon>favorite_border</mat-icon>
+    <button (click)="updateLike(post)" color="accent" mat-icon-button>
+      <mat-icon>{{ isLiked(post) ? "favorite" : "favorite_border" }}</mat-icon>
     </button>
-    <span>4</span>
+    <span>{{ post.likes.length }}</span>
     <button (click)="panel.toggle()" color="accent" mat-icon-button>
       <mat-icon>comments</mat-icon>
     </button>
-    <span>2</span>
+    <span>{{ post.comments.length }}</span>
   </mat-card-actions>
+
+  <mat-divider></mat-divider>
+
+  <mat-card-content
+    style="padding: 2px 36px; margin: 0; background-color: #efefef"
+    fxLayout="row"
+    fxLayoutAlign="center center"
+    fxLayoutGap="2px"
+  >
+    <img
+      matPrefix
+      mat-card-avatar
+      style="transform: scale(0.65)"
+      [src]="
+        currentUser.photoUrl ? currentUser.photoUrl : '../../../assets/user.png'
+      "
+      alt=""
+    />
+    <mat-form-field fxFill>
+      <input matInput placeholder="Write something..." />
+    </mat-form-field>
+  </mat-card-content>
 
   <mat-expansion-panel
     class="mat-elevation-z0"
@@ -76,28 +98,7 @@
   >
     <ng-template matExpansionPanelContent>
       <div
-        style="padding: 6px 9px 0"
-        fxLayout="row"
-        fxLayoutAlign="center center"
-        fxLayoutGap="2px"
-      >
-        <img
-          matPrefix
-          mat-card-avatar
-          style="transform: scale(0.65)"
-          [src]="
-            currentUser.photoUrl
-              ? currentUser.photoUrl
-              : '../../../assets/user.png'
-          "
-          alt=""
-        />
-        <mat-form-field fxFill>
-          <input matInput placeholder="Write something..." />
-        </mat-form-field>
-      </div>
-      <div
-        style="padding: 6px 9px 0"
+        style="padding: 6px 10px 0"
         fxLayout="row"
         fxLayoutAlign="center start"
         fxLayoutGap="2px"
@@ -116,7 +117,7 @@
         <div
           fxFill
           fxLayout="column"
-          style="background-color: white; padding: 0.6em"
+          style="background-color: white; padding: 0.6em; border-radius: 3px"
         >
           <h4 class="comment-header">Jane Anne</h4>
           <div>Thanks a lot, that's so helpful</div>

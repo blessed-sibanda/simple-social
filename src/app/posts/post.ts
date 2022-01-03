@@ -1,11 +1,24 @@
 import { IFollow, User } from '../user/user';
 
+interface ILike {
+  _id: string;
+}
+
+interface IComment {
+  _id: string;
+  postedBy: IFollow;
+  text: string;
+  createdAt: string;
+}
+
 export interface IPost {
   _id: string;
   text: string;
   photoUrl: string;
   postedBy: IFollow;
   createdAt: string;
+  likes: ILike[];
+  comments: IComment[];
 }
 
 export class Post {
@@ -14,7 +27,9 @@ export class Post {
     public text = '',
     public photoUrl = '',
     public postedBy = new User() as IFollow,
-    public createdAt = ''
+    public createdAt = '',
+    public likes: ILike[] = [],
+    public comments: IComment[] = []
   ) {}
 
   static Build(post: IPost): Post {
@@ -23,7 +38,9 @@ export class Post {
       post.text,
       post.photoUrl,
       post.postedBy,
-      post.createdAt
+      post.createdAt,
+      post.likes,
+      post.comments
     );
   }
 

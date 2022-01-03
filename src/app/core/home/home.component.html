@@ -21,10 +21,10 @@
   style="max-width: 1080px; margin: 0 auto; padding: 0 1em"
   *ngIf="(authService.authStatus$ | async)?.isAuthenticated"
 >
-  <div fxFlex.sm="57%" fxFlex.gt-sm="65%">
+  <div fxFlex.sm="60%" fxFlex.gt-sm="65%">
     <h1>Newsfeed</h1>
     <app-new-post></app-new-post>
     <app-post-list></app-post-list>
   </div>
-  <app-find-people fxFlex.sm="43%" fxFlex.gt-sm="35%"></app-find-people>
+  <app-find-people fxFlex.sm="40%" fxFlex.gt-sm="35%"></app-find-people>
 </div>

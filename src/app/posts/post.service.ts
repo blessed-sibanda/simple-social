@@ -9,6 +9,8 @@ interface IPostService {
   getPostFeed(): Observable<Post[]>;
   createPost(text: string, file?: File): Observable<Post>;
   deletePost(id: string): Observable<any>;
+  likePost(id: string): Observable<Post>;
+  unLikePost(id: string): Observable<Post>;
 }
 
 @Injectable({
@@ -18,6 +20,18 @@ export class PostService implements IPostService {
   posts$ = new BehaviorSubject<IPost[]>([]);
 
   constructor(private httpClient: HttpClient) {}
+
+  likePost(id: string): Observable<Post> {
+    return this.httpClient
+      .put<IPost>(`${environment.baseApiUrl}/posts/${id}/like`, {})
+      .pipe(map(Post.Build), catchError(transformError));
+  }
+
+  unLikePost(id: string): Observable<Post> {
+    return this.httpClient
+      .delete<IPost>(`${environment.baseApiUrl}/posts/${id}/like`)
+      .pipe(map(Post.Build), catchError(transformError));
+  }
 
   getPostFeed(): Observable<Post[]> {
     return this.httpClient
