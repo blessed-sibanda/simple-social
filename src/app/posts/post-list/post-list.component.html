@@ -24,7 +24,10 @@
       >
         {{ post.postedBy.name }}
       </h5>
-      <span style="font-size: 12px" mat-line>{{ post.createdAt | date }}</span>
+      <span style="font-size: 12px" mat-line
+        >{{ post.createdAt | date: "mediumDate" }} &mdash;
+        {{ post.createdAt | date: "shortTime" }}</span
+      >
 
       <div class="flex-spacer"></div>
       <button
@@ -123,16 +126,38 @@
         <div
           fxFill
           fxLayout="column"
-          style="background-color: white; padding: 0.6em; border-radius: 3px"
+          style="
+            background-color: white;
+            padding: 0.6em;
+            padding-top: 0.2em;
+            border-radius: 3px;
+          "
         >
           <h4
-            class="comment-header"
-            [routerLink]="'/users/' + comment.commentedBy._id"
+            fxLayout="row"
+            style="margin: 0"
+            fxLayoutAlign="space-between center"
           >
-            {{ comment.commentedBy.name }}
+            <span
+              class="comment-header"
+              [routerLink]="'/users/' + comment.commentedBy._id"
+              >{{ comment.commentedBy.name }}</span
+            >
+            <button
+              *ngIf="comment.commentedBy._id === currentUser._id"
+              (click)="deleteComment(post, comment._id)"
+              mat-icon-button
+            >
+              <mat-icon style="transform: scale(0.85)" color="accent"
+                >delete</mat-icon
+              >
+            </button>
           </h4>
           <div>{{ comment.text }}</div>
-          <small>{{ comment.createdAt }}</small>
+          <small
+            >{{ comment.createdAt | date: "mediumDate" }} &mdash;
+            {{ comment.createdAt | date: "shortTime" }}</small
+          >
         </div>
       </div>
     </ng-template>

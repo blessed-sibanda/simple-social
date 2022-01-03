@@ -89,6 +89,30 @@ export class PostListComponent implements OnInit, OnDestroy {
       );
   }
 
+  deleteComment(post: Post, commentId: string) {
+    const dialog = this.uiService.showDialog(
+      'Delete Comment',
+      'Confirm to delete your comment',
+      'Confirm',
+      'Cancel'
+    );
+    this.subs.add(
+      dialog.subscribe((result) => {
+        if (result)
+          this.postService.deleteComment(post._id, commentId).subscribe({
+            next: (res) => {
+              this.posts = this.posts.map((p) => {
+                if (p._id === post._id) p.comments = res.comments;
+                return p;
+              });
+              this.postService.posts$.next(this.posts);
+            },
+            error: (err) => this.uiService.showToast(err.message),
+          });
+      })
+    );
+  }
+
   deletePost(post: Post) {
     const dialog = this.uiService.showDialog(
       'Delete Post',
