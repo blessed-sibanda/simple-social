@@ -1,15 +1,7 @@
-<mat-card style="padding-top: 5px">
-  <mat-list
-    style="
-      padding: 0;
-      margin-top: -6px;
-      margin-left: -16px;
-      margin-right: -16px;
-    "
-  >
-    <mat-list-item>
+<mat-card style="padding: 0; margin-bottom: 1.6em">
+  <mat-list style="background-color: #efefef; padding-top: 2px">
+    <mat-list-item style="height: 52px">
       <img
-        style="margin-right: 0.5em"
         mat-list-avatar
         [src]="
           currentUser.photoUrl
@@ -19,13 +11,15 @@
         alt=""
       />
 
-      <span>{{ currentUser.name }}</span>
+      <h5 mat-line>
+        Welcome, <strong>{{ currentUser.name }}</strong>
+      </h5>
     </mat-list-item>
   </mat-list>
   <mat-divider></mat-divider>
 
   <mat-card-content
-    style="margin-bottom: 0; margin-top: 1em; padding-bottom: 0"
+    style="margin-bottom: 0; margin-top: 1em; padding: 4px 16px 0 16px"
   >
     <div [formGroup]="postForm" fxLayout="column" fxLayoutGap="10px">
       <mat-form-field style="padding-bottom: 0.5em" fxFlex="100%">
@@ -52,7 +46,8 @@
       ></ngp-image-picker>
     </div>
   </mat-card-content>
-  <mat-card-actions fxLayout="row">
+
+  <mat-card-actions style="padding: 0 16px 8px" fxLayout="row">
     <button (click)="upload = !upload" mat-icon-button>
       <mat-icon *ngIf="!upload">add_a_photo</mat-icon>
       <mat-icon color="warn" *ngIf="upload">close</mat-icon>
