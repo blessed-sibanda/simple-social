@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { UiService } from '../common/ui.service';
+import { PostService } from '../posts/post.service';
 import { IFollow, IUser } from './user';
 import { UserService } from './user.service';
 
@@ -12,7 +13,11 @@ export class FollowService {
   following$ = new BehaviorSubject<IFollow[]>([]);
   isFollower$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private userService: UserService, private uiService: UiService) {}
+  constructor(
+    private userService: UserService,
+    private uiService: UiService,
+    private postService: PostService
+  ) {}
 
   followUser(user: IUser | IFollow) {
     this.userService.followUser(user._id).subscribe({
@@ -20,6 +25,7 @@ export class FollowService {
         this.followers$.next(res.followers);
         this.isFollower$.next(true);
         this.uiService.showToast(`You are now following ${res.name}`);
+        this.postService.getPostFeed().subscribe();
       },
       error: (err) => {
         console.log(err);

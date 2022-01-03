@@ -35,25 +35,24 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   syncData() {
     this.loading = true;
-
+    let user = this.route.snapshot.data['user'];
+    let action = user
+      ? () => this.postService.getUserPosts(user._id)
+      : () => this.postService.getPostFeed();
     this.subs.add(
-      this.authService.currentUser$.subscribe({
-        next: (currentUser) => {
-          this.currentUser = currentUser;
-          let user = this.route.snapshot.data['user'];
-          let action = user
-            ? () => this.postService.getUserPosts(user._id)
-            : () => this.postService.getPostFeed(this.currentUser._id);
-          combineLatest([action(), this.postService.posts$])
-            .pipe(
-              tap(([res, posts]) => {
-                this.posts = posts;
-                this.loading = false;
-              })
-            )
-            .subscribe();
-        },
-      })
+      combineLatest([
+        action(),
+        this.postService.posts$,
+        this.authService.currentUser$,
+      ])
+        .pipe(
+          tap(([res, posts, user]) => {
+            this.currentUser = user;
+            this.posts = posts;
+            this.loading = false;
+          })
+        )
+        .subscribe()
     );
   }
 
