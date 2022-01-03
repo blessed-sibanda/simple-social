@@ -14,6 +14,7 @@ import { UserService } from '../user.service';
 export class FindPeopleComponent implements OnInit {
   subs = new SubSink();
   people: User[] = [];
+  loading = true;
 
   constructor(
     private userService: UserService,
@@ -27,6 +28,7 @@ export class FindPeopleComponent implements OnInit {
       .pipe(
         tap((people) => {
           this.people = people;
+          this.loading = false;
         })
       )
       .subscribe();
