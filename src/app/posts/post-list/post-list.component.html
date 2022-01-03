@@ -1,165 +1,173 @@
-<mat-card
-  *ngFor="let post of posts"
-  class="mat-elevation-z1"
-  style="padding: 0; margin: 1em 0; border-radius: 0"
->
-  <mat-list
-    style="background-color: #efefef; padding-top: 2px; border-radius: 0"
+<mat-progress-spinner *ngIf="loading"></mat-progress-spinner>
+
+<div *ngIf="!loading">
+  <mat-card
+    *ngFor="let post of posts"
+    class="mat-elevation-z1"
+    style="padding: 0; margin: 1em 0; border-radius: 0"
   >
-    <mat-list-item style="height: 52px">
-      <img
-        mat-list-avatar
-        [src]="
-          post.postedBy.photoUrl
-            ? post.postedBy.photoUrl
-            : '../../../assets/user.png'
-        "
-        alt=""
-      />
-
-      <h5
-        [routerLink]="'/users/' + post.postedBy._id"
-        style="cursor: pointer"
-        mat-line
-      >
-        {{ post.postedBy.name }}
-      </h5>
-      <span style="font-size: 12px" mat-line
-        >{{ post.createdAt | date: "mediumDate" }} &mdash;
-        {{ post.createdAt | date: "shortTime" }}</span
-      >
-
-      <div class="flex-spacer"></div>
-      <button
-        *ngIf="currentUser._id === post.postedBy._id"
-        color="accent"
-        mat-icon-button
-        (click)="this.deletePost(post)"
-      >
-        <mat-icon>delete</mat-icon>
-      </button>
-    </mat-list-item>
-  </mat-list>
-  <mat-divider></mat-divider>
-  <mat-card-content style="padding: 16px; margin-bottom: 0">
-    <div>{{ post.text }}</div>
-  </mat-card-content>
-  <img
-    style="
-      max-height: 320px;
-      object-fit: cover;
-      padding: 0 16px;
-      margin-bottom: -5px;
-      max-width: 100%;
-    "
-    *ngIf="post.photoUrl"
-    mat-card-image
-    [src]="post.photoUrl"
-    alt=""
-  />
-  <mat-divider></mat-divider>
-  <mat-card-actions
-    style="padding: 6px 16px; margin: 0; background-color: #efefef"
-  >
-    <button (click)="updateLike(post)" color="accent" mat-icon-button>
-      <mat-icon>{{ isLiked(post) ? "favorite" : "favorite_border" }}</mat-icon>
-    </button>
-    <span>{{ post.likes.length }}</span>
-    <button (click)="panel.toggle()" color="accent" mat-icon-button>
-      <mat-icon>comments</mat-icon>
-    </button>
-    <span>{{ post.comments.length }}</span>
-  </mat-card-actions>
-
-  <mat-divider></mat-divider>
-
-  <mat-card-content
-    style="padding: 2px 36px; margin: 0; background-color: #efefef"
-    fxLayout="row"
-    fxLayoutAlign="center center"
-    fxLayoutGap="2px"
-  >
-    <img
-      matPrefix
-      mat-card-avatar
-      style="transform: scale(0.65)"
-      [src]="
-        currentUser.photoUrl ? currentUser.photoUrl : '../../../assets/user.png'
-      "
-      alt=""
-    />
-    <mat-form-field fxFill>
-      <input
-        matInput
-        #comment
-        (keyup)="createComment(post, comment, panel, $event)"
-        placeholder="Write something..."
-      />
-    </mat-form-field>
-  </mat-card-content>
-
-  <mat-expansion-panel
-    class="mat-elevation-z0"
-    style="padding: 0; background-color: #efefef"
-    #panel
-    hideToggle
-  >
-    <ng-template matExpansionPanelContent>
-      <div
-        *ngFor="let comment of post.comments"
-        style="padding: 6px 10px 0"
-        fxLayout="row"
-        fxLayoutAlign="center start"
-        fxLayoutGap="2px"
-      >
+    <mat-list
+      style="background-color: #efefef; padding-top: 2px; border-radius: 0"
+    >
+      <mat-list-item style="height: 52px">
         <img
-          matPrefix
-          mat-card-avatar
-          style="transform: scale(0.65)"
+          mat-list-avatar
           [src]="
-            comment.commentedBy.photoUrl
-              ? comment.commentedBy.photoUrl
+            post.postedBy.photoUrl
+              ? post.postedBy.photoUrl
               : '../../../assets/user.png'
           "
           alt=""
         />
-        <div
-          fxFill
-          fxLayout="column"
-          style="
-            background-color: white;
-            padding: 0.6em;
-            padding-top: 0.2em;
-            border-radius: 3px;
-          "
+
+        <h5
+          [routerLink]="'/users/' + post.postedBy._id"
+          style="cursor: pointer"
+          mat-line
         >
-          <h4
-            fxLayout="row"
-            style="margin: 0"
-            fxLayoutAlign="space-between center"
+          {{ post.postedBy.name }}
+        </h5>
+        <span style="font-size: 12px" mat-line
+          >{{ post.createdAt | date: "mediumDate" }} &mdash;
+          {{ post.createdAt | date: "shortTime" }}</span
+        >
+
+        <div class="flex-spacer"></div>
+        <button
+          *ngIf="currentUser._id === post.postedBy._id"
+          color="accent"
+          mat-icon-button
+          (click)="this.deletePost(post)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
+    <mat-divider></mat-divider>
+    <mat-card-content style="padding: 16px; margin-bottom: 0">
+      <div>{{ post.text }}</div>
+    </mat-card-content>
+    <img
+      style="
+        max-height: 320px;
+        object-fit: cover;
+        padding: 0 16px;
+        margin-bottom: -5px;
+        max-width: 100%;
+      "
+      *ngIf="post.photoUrl"
+      mat-card-image
+      [src]="post.photoUrl"
+      alt=""
+    />
+    <mat-divider></mat-divider>
+    <mat-card-actions
+      style="padding: 6px 16px; margin: 0; background-color: #efefef"
+    >
+      <button (click)="updateLike(post)" color="accent" mat-icon-button>
+        <mat-icon>{{
+          isLiked(post) ? "favorite" : "favorite_border"
+        }}</mat-icon>
+      </button>
+      <span>{{ post.likes.length }}</span>
+      <button (click)="panel.toggle()" color="accent" mat-icon-button>
+        <mat-icon>comments</mat-icon>
+      </button>
+      <span>{{ post.comments.length }}</span>
+    </mat-card-actions>
+
+    <mat-divider></mat-divider>
+
+    <mat-card-content
+      style="padding: 2px 36px; margin: 0; background-color: #efefef"
+      fxLayout="row"
+      fxLayoutAlign="center center"
+      fxLayoutGap="2px"
+    >
+      <img
+        matPrefix
+        mat-card-avatar
+        style="transform: scale(0.65)"
+        [src]="
+          currentUser.photoUrl
+            ? currentUser.photoUrl
+            : '../../../assets/user.png'
+        "
+        alt=""
+      />
+      <mat-form-field fxFill>
+        <input
+          matInput
+          #comment
+          (keyup)="createComment(post, comment, panel, $event)"
+          placeholder="Write something..."
+        />
+      </mat-form-field>
+    </mat-card-content>
+
+    <mat-expansion-panel
+      class="mat-elevation-z0"
+      style="padding: 0; background-color: #efefef"
+      #panel
+      hideToggle
+    >
+      <ng-template matExpansionPanelContent>
+        <div
+          *ngFor="let comment of post.comments"
+          style="padding: 6px 10px 0"
+          fxLayout="row"
+          fxLayoutAlign="center start"
+          fxLayoutGap="2px"
+        >
+          <img
+            matPrefix
+            mat-card-avatar
+            style="transform: scale(0.65)"
+            [src]="
+              comment.commentedBy.photoUrl
+                ? comment.commentedBy.photoUrl
+                : '../../../assets/user.png'
+            "
+            alt=""
+          />
+          <div
+            fxFill
+            fxLayout="column"
+            style="
+              background-color: white;
+              padding: 0.6em;
+              padding-top: 0.2em;
+              border-radius: 3px;
+            "
           >
-            <span
-              class="comment-header"
-              [routerLink]="'/users/' + comment.commentedBy._id"
-              >{{ comment.commentedBy.name }}</span
+            <h4
+              fxLayout="row"
+              style="margin: 0"
+              fxLayoutAlign="space-between center"
             >
-            <button
-              *ngIf="comment.commentedBy._id === currentUser._id"
-              (click)="deleteComment(post, comment._id)"
-              mat-icon-button
-            >
-              <mat-icon style="transform: scale(0.85)" color="accent"
-                >delete</mat-icon
+              <span
+                class="comment-header"
+                [routerLink]="'/users/' + comment.commentedBy._id"
+                >{{ comment.commentedBy.name }}</span
               >
-            </button>
-          </h4>
-          <div>{{ comment.text }}</div>
-          <small
-            >{{ comment.createdAt | date: "mediumDate" }} &mdash;
-            {{ comment.createdAt | date: "shortTime" }}</small
-          >
+              <button
+                *ngIf="comment.commentedBy._id === currentUser._id"
+                (click)="deleteComment(post, comment._id)"
+                mat-icon-button
+              >
+                <mat-icon style="transform: scale(0.85)" color="accent"
+                  >delete</mat-icon
+                >
+              </button>
+            </h4>
+            <div>{{ comment.text }}</div>
+            <small
+              >{{ comment.createdAt | date: "mediumDate" }} &mdash;
+              {{ comment.createdAt | date: "shortTime" }}</small
+            >
+          </div>
         </div>
-      </div>
-    </ng-template>
-  </mat-expansion-panel>
-</mat-card>
+      </ng-template>
+    </mat-expansion-panel>
+  </mat-card>
+</div>

@@ -18,6 +18,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
   subs = new SubSink();
   currentUser!: User;
+  loading = true;
 
   constructor(
     private postService: PostService,
@@ -33,19 +34,26 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   syncData() {
-    let user = this.route.snapshot.data['user'];
-    this.currentUser = this.authService.currentUser$.getValue();
-    let action = user
-      ? () => this.postService.getUserPosts(user._id)
-      : () => this.postService.getPostFeed(this.currentUser._id);
+    this.loading = true;
+
     this.subs.add(
-      combineLatest([action(), this.postService.posts$])
-        .pipe(
-          tap(([res, posts]) => {
-            this.posts = posts;
-          })
-        )
-        .subscribe()
+      this.authService.currentUser$.subscribe({
+        next: (currentUser) => {
+          this.currentUser = currentUser;
+          let user = this.route.snapshot.data['user'];
+          let action = user
+            ? () => this.postService.getUserPosts(user._id)
+            : () => this.postService.getPostFeed(this.currentUser._id);
+          combineLatest([action(), this.postService.posts$])
+            .pipe(
+              tap(([res, posts]) => {
+                this.posts = posts;
+                this.loading = false;
+              })
+            )
+            .subscribe();
+        },
+      })
     );
   }
 
