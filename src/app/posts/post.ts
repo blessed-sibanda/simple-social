@@ -6,7 +6,7 @@ interface ILike {
 
 interface IComment {
   _id: string;
-  postedBy: IFollow;
+  commentedBy: IFollow;
   text: string;
   createdAt: string;
 }

@@ -86,7 +86,12 @@
       alt=""
     />
     <mat-form-field fxFill>
-      <input matInput placeholder="Write something..." />
+      <input
+        matInput
+        #comment
+        (keyup)="createComment(post, comment, panel, $event)"
+        placeholder="Write something..."
+      />
     </mat-form-field>
   </mat-card-content>
 
@@ -98,6 +103,7 @@
   >
     <ng-template matExpansionPanelContent>
       <div
+        *ngFor="let comment of post.comments"
         style="padding: 6px 10px 0"
         fxLayout="row"
         fxLayoutAlign="center start"
@@ -108,8 +114,8 @@
           mat-card-avatar
           style="transform: scale(0.65)"
           [src]="
-            currentUser.photoUrl
-              ? currentUser.photoUrl
+            comment.commentedBy.photoUrl
+              ? comment.commentedBy.photoUrl
               : '../../../assets/user.png'
           "
           alt=""
@@ -119,9 +125,14 @@
           fxLayout="column"
           style="background-color: white; padding: 0.6em; border-radius: 3px"
         >
-          <h4 class="comment-header">Jane Anne</h4>
-          <div>Thanks a lot, that's so helpful</div>
-          <small>Sun Dec 20</small>
+          <h4
+            class="comment-header"
+            [routerLink]="'/users/' + comment.commentedBy._id"
+          >
+            {{ comment.commentedBy.name }}
+          </h4>
+          <div>{{ comment.text }}</div>
+          <small>{{ comment.createdAt }}</small>
         </div>
       </div>
     </ng-template>

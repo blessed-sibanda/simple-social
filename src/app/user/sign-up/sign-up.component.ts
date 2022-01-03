@@ -51,7 +51,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.userService.signUp(user).subscribe({
         next: (res: IUser) => {
-          this.uiService.showDialog(
+          const dialog = this.uiService.showDialog(
             'Sign Up ',
             'You have signed up successfully. \n You can now login',
             'Login'

@@ -8,6 +8,8 @@ import { IPost, Post } from './post';
 interface IPostService {
   getPostFeed(): Observable<Post[]>;
   createPost(text: string, file?: File): Observable<Post>;
+  createComment(postId: string, text: string): Observable<Post>;
+  deleteComment(postId: string, commentId: string): Observable<Post>;
   deletePost(id: string): Observable<any>;
   likePost(id: string): Observable<Post>;
   unLikePost(id: string): Observable<Post>;
@@ -20,6 +22,22 @@ export class PostService implements IPostService {
   posts$ = new BehaviorSubject<IPost[]>([]);
 
   constructor(private httpClient: HttpClient) {}
+
+  deleteComment(postId: string, commentId: string): Observable<Post> {
+    return this.httpClient
+      .delete<IPost>(
+        `${environment.baseApiUrl}/posts/${postId}/comments/${commentId}`
+      )
+      .pipe(map(Post.Build), catchError(transformError));
+  }
+
+  createComment(postId: string, text: string): Observable<Post> {
+    return this.httpClient
+      .post<IPost>(`${environment.baseApiUrl}/posts/${postId}/comments`, {
+        text,
+      })
+      .pipe(map(Post.Build), catchError(transformError));
+  }
 
   likePost(id: string): Observable<Post> {
     return this.httpClient

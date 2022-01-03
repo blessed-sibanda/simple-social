@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatExpansionPanel } from '@angular/material/expansion';
 import { combineLatest, tap } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { UiService } from 'src/app/common/ui.service';
@@ -62,6 +63,30 @@ export class PostListComponent implements OnInit, OnDestroy {
         error: (err) => this.uiService.showToast(err.message),
       })
     );
+  }
+
+  createComment(
+    post: Post,
+    text: HTMLInputElement,
+    commentsPanel: MatExpansionPanel,
+    event: any
+  ) {
+    if (text.value.trim() === '') return;
+    if (event.keyCode === 13)
+      this.subs.add(
+        this.postService.createComment(post._id, text.value).subscribe({
+          next: (res) => {
+            commentsPanel.open();
+            text.value = '';
+            this.posts = this.posts.map((p) => {
+              if (p._id === post._id) p.comments = res.comments;
+              return p;
+            });
+            this.postService.posts$.next(this.posts);
+          },
+          error: (err) => this.uiService.showToast(err.message),
+        })
+      );
   }
 
   deletePost(post: Post) {
