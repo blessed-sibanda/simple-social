@@ -11,11 +11,6 @@ This is a social media application with rudimentary features inspired by existin
 
 ## Run the development server
 
-Install Angular CLI
-```bash
-sudo npm install -g @angular/cli
-```
-
 Clone this repo
 ```bash
 git clone https://github.com/blessed-sibanda/simple-social/
@@ -33,6 +28,4 @@ $ npm install
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+#### To Run the Backend API Server, clone this [repo](https://github.com/blessed-sibanda/simple-social-server) and follow instructions
